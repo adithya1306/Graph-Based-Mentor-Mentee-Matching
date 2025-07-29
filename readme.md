@@ -110,22 +110,16 @@ Once a mentor is matched:
 
 ### 📂 Directory Structure 
 
-├── mentorship-matching-service
-
-│   ├── controller/
-
-│   ├── service/
-
-│   ├── repo/
-
-│   ├── dto/
-
-│   ├── model/
-
-│   ├── config/
-
-│   └── aspect/
-
+```
+mentorship-matching-service
+├── controller/
+├── service/
+├── repo/
+├── dto/
+├── model/
+├── config/
+└── aspect/
+```
 
 
 
