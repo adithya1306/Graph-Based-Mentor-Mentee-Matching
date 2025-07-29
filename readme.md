@@ -53,12 +53,16 @@ A distributed microservices-based backend system for connecting mentees with men
 ## 📁 Project Structure
 
 mentorship-platform-backend/
+
 ├── user-service/
 │ └── Handles OTP login, role-based registration
+
 ├── mentorship-matching-service/
 │ └── Mentor-Mentee graph matching, meeting scheduling
+
 ├── api-gateway-service/
 │ └── Routes external API calls to microservices
+
 ├── eureka-server/
 │ └── Eureka server for service registry
 
@@ -107,11 +111,19 @@ Once a mentor is matched:
 ### 📂 Directory Structure 
 
 ├── mentorship-matching-service
+
 │   ├── controller/
+
 │   ├── service/
+
 │   ├── repo/
+
+│   ├── dto/
+
 │   ├── model/
+
 │   ├── config/
+
 │   └── aspect/
 
 
