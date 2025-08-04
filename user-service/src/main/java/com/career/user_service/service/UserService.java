@@ -1,5 +1,6 @@
 package com.career.user_service.service;
 
+import com.career.user_service.kafka.UserToGraphProducer;
 import com.career.user_service.model.LoginReq;
 import com.career.user_service.model.LoginResp;
 import com.career.user_service.model.User;
@@ -34,6 +35,9 @@ public class UserService {
     @Autowired
     private JWTUtility jwtUtility;
 
+    @Autowired
+    private UserToGraphProducer userToGraphProducer;
+
     public Object createUser(User userRequest) {
         // Check if user already exists
         if (repo.findByEmail(userRequest.getEmail()) != null) {
@@ -48,13 +52,14 @@ public class UserService {
                 .phoneNumber(userRequest.getPhoneNumber())
                 .role(userRequest.getRole())
                 .skills(userRequest.getSkills())
-                .goals(userRequest.getGoals())
+                .industry(userRequest.getIndustry())
                 .experienceLevel(userRequest.getExperienceLevel())
                 .availability(userRequest.getAvailability())
                 .build();
 
-        String otp = otpService.generateOTP(user.getEmail());
-        emailService.sendEmail(user.getEmail(), otp);
+//        String otp = otpService.generateOTP(user.getEmail());
+//        emailService.sendEmail(user.getEmail(), otp);
+        userToGraphProducer.sendUserToGraph(user); // Send user data to Graph service
         return repo.save(user);
     }
 

@@ -17,7 +17,7 @@ public class User {
     private String phoneNumber;
     private String role;
     private List<String> skills;
-    private List<String> goals;
+    private String industry;
     private String experienceLevel;
     private List<String> availability;
 
@@ -41,7 +41,7 @@ public class User {
         this.phoneNumber = builder.phoneNumber;
         this.role = builder.role;
         this.skills = builder.skills;
-        this.goals = builder.goals;
+        this.industry = builder.industry;
         this.experienceLevel = builder.experienceLevel;
         this.availability = builder.availability;
     }
@@ -57,7 +57,7 @@ public class User {
         private String phoneNumber;
         private String role;
         private List<String> skills;
-        private List<String> goals;
+        private String industry;
         private String experienceLevel;
         private List<String> availability;
 
@@ -101,8 +101,8 @@ public class User {
             return this;
         }
 
-        public Builder goals(List<String> goals) {
-            this.goals = goals;
+        public Builder industry(String industry) {
+            this.industry = industry;
             return this;
         }
 
@@ -190,14 +190,6 @@ public class User {
         this.skills = skills;
     }
 
-    public List<String> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(List<String> goals) {
-        this.goals = goals;
-    }
-
     public String getExperienceLevel() {
         return experienceLevel;
     }
@@ -214,10 +206,18 @@ public class User {
         this.availability = availability;
     }
 
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, String email, String password, String phoneNumber, String role, List<String> skills, List<String> goals, String experienceLevel, List<String> availability) {
+    public User(String id, String firstName, String lastName, String email, String password, String phoneNumber, String role, List<String> skills, String industry, String experienceLevel, List<String> availability) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -226,7 +226,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.role = role;
         this.skills = skills;
-        this.goals = goals;
+        this.industry = industry;
         this.experienceLevel = experienceLevel;
         this.availability = availability;
     }
