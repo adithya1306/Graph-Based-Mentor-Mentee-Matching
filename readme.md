@@ -1,6 +1,6 @@
 # 🧠 Graph-Based Mentor–Mentee Matching & Scheduling App
 
-A distributed microservices-based backend system for connecting mentees with mentors based on skills, availability, and industry preferences. Built using **Spring Boot**, **Neo4j (Graph DB)**, **Redis**, and **Eureka**, the platform facilitates intelligent matchmaking, OTP-based user authentication, meeting scheduling, and automated lifecycle management of mentorship sessions.
+A distributed microservices-based backend system for connecting mentees with mentors based on skills, availability, and industry preferences. Built using **Spring Boot**, **Neo4j (Graph DB)**, **Redis**, and **Kafka**, the platform facilitates intelligent matchmaking, OTP-based user authentication, meeting scheduling, and automated lifecycle management of mentorship sessions.
 
 ---
 
@@ -9,6 +9,7 @@ A distributed microservices-based backend system for connecting mentees with men
 ### ✅ User Authentication
 - OTP-based login and registration using **Redis**.
 - Role-based access control (`MENTOR`, `MENTEE`).
+- Automatically projected verified users into a Neo4j DB via Kafka consumer for downstream matchmaking logic
 
 ### 🤝 Mentor-Mentee Matching
 - Dynamic matching based on **skills**, **industry**, and **experience**.
