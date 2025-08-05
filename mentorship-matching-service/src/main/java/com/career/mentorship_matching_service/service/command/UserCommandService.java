@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// Data received from kafka
+// Received user data: {"id":null,"firstName":"Adithya","lastName":"Balaji","email":"it.adithyab@gmail.com","password":"$2a$12$WHfg8Z7FBYPZzz.Tij2rmurBh8.ujjnStm3zKJCaaS9mDudSZJAR.","phoneNumber":"9876543210","role":"MENTEE","skills":["Java","Spring Boot","REST APIs"],"goals":["Become a backend developer","Contribute to open source"],"experienceLevel":"MID","availability":["Monday 6PM-8PM","Saturday 10AM-12PM"],"verified":false} with key: MENTEE
+
 @Service
 public class UserCommandService {
     @Autowired
@@ -29,26 +32,29 @@ public class UserCommandService {
     @Autowired
     private MeetingQuery meetingQuery;
 
-    public void saveOrUpdateUser(UserCommandDTO user) {
+    public void saveOrUpdateUser(User user) {
         String role = user.getRole();
 
         if (role.equalsIgnoreCase("MENTOR")) {
             Mentor mentor = new Mentor(
-                    user.getId(),
-                    user.getName(),
+                    String.valueOf(mentorRepo.findLastUser() + 1),
+                    user.getFirstName() + " " + user.getLastName(),
                     user.getEmail(),
                     user.getSkills().stream().map(Skill::new).collect(Collectors.toList()),
                     new Industry(user.getIndustry())
             );
             mentorRepo.save(mentor);
+            System.out.println("Added mentor" + user.getFirstName() + " " + user.getLastName());
         } else if (role.equalsIgnoreCase("MENTEE")) {
+            System.out.println(user.getSkills().stream().map(Skill::new).collect(Collectors.toList()));
             Mentee mentee = new Mentee(
-                    user.getId(),
-                    user.getName(),
+                    String.valueOf(menteeRepo.findLastUser() + 1),
+                    user.getFirstName() + " " + user.getLastName(),
                     user.getEmail(),
                     user.getSkills().stream().map(Skill::new).collect(Collectors.toList()),
                     new Industry(user.getIndustry()));
             menteeRepo.save(mentee);
+            System.out.println("Added mentee" + user.getFirstName() + " " + user.getLastName());
         } else {
             throw new IllegalArgumentException("Invalid role: " + role);
         }

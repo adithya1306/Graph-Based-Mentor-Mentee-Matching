@@ -4,6 +4,7 @@ import com.career.mentorship_matching_service.dto.MeetingRequestDTO;
 import com.career.mentorship_matching_service.dto.RescheduleMeetingDTO;
 import com.career.mentorship_matching_service.model.TimeSlot;
 import com.career.mentorship_matching_service.dto.UserCommandDTO;
+import com.career.mentorship_matching_service.model.User;
 import com.career.mentorship_matching_service.service.command.UserCommandService;
 import org.neo4j.driver.summary.ResultSummary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserCommandController {
     private UserCommandService service;
 
     @PostMapping
-    public ResponseEntity<String> saveOrUpdateUser(@RequestBody UserCommandDTO user) {
+    public ResponseEntity<String> saveOrUpdateUser(@RequestBody User user) {
         service.saveOrUpdateUser(user);
         return ResponseEntity.ok("User saved or updated successfully");
     }
