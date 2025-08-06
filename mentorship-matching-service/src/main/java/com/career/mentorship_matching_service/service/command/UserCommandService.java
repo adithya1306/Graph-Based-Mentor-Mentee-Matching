@@ -60,6 +60,19 @@ public class UserCommandService {
         }
     }
 
+    public Mentee confirmMentor(String menteeId, String mentorId) {
+        Mentee mentee = menteeRepo.findById(menteeId).orElseThrow(() -> new IllegalArgumentException("Mentee not found"));
+        Mentor mentor = mentorRepo.findById(mentorId).orElseThrow(() -> new IllegalArgumentException("Mentor not found"));
+
+        menteeRepo.deleteMentorRelationship(menteeId);
+
+        mentee.setMentors(List.of(mentor));
+        menteeRepo.save(mentee);
+        System.out.println(mentee.getMentors());
+
+        return mentee;
+    }
+
 
     public void saveAvailableSlotsForMentor(String userId, List<TimeSlot> timeSlots) {
         Mentor mentor = mentorRepo.findById(userId).get();

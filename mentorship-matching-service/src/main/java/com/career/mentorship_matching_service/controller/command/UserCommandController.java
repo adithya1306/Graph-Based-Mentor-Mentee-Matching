@@ -2,6 +2,7 @@ package com.career.mentorship_matching_service.controller.command;
 
 import com.career.mentorship_matching_service.dto.MeetingRequestDTO;
 import com.career.mentorship_matching_service.dto.RescheduleMeetingDTO;
+import com.career.mentorship_matching_service.model.Mentee;
 import com.career.mentorship_matching_service.model.TimeSlot;
 import com.career.mentorship_matching_service.dto.UserCommandDTO;
 import com.career.mentorship_matching_service.model.User;
@@ -40,6 +41,21 @@ public class UserCommandController {
             return ResponseEntity.badRequest().body("Invalid role: " + role);
         }
     }
+
+    @PostMapping("/confirm-mentor")
+    public ResponseEntity<?> confirmMentor(
+            @RequestBody String mentorId,
+            @RequestHeader("X-User-Id") String menteeId
+    ) {
+        System.out.println(mentorId);
+        try {
+            Mentee mentee = service.confirmMentor(menteeId, mentorId);
+            return ResponseEntity.ok("Mentor "  +  " confirmed successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/schedule-meeting")
     public ResponseEntity<?> scheduleMeeting(

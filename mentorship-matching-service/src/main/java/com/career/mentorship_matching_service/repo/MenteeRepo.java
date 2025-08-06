@@ -16,4 +16,11 @@ public interface MenteeRepo extends Neo4jRepository<Mentee, String> {
     LIMIT 1
     """)
     Integer findLastUser();
+
+    @Query("""
+    MATCH (m:Mentee {id: $id}) - [r:MENTORED_BY] -> (mentor:Mentor)
+    DELETE r
+    """)
+    void deleteMentorRelationship(String id);
+
 }
