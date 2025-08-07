@@ -2,11 +2,13 @@ package com.career.mentorship_matching_service.controller.command;
 
 import com.career.mentorship_matching_service.dto.MeetingRequestDTO;
 import com.career.mentorship_matching_service.dto.RescheduleMeetingDTO;
+import com.career.mentorship_matching_service.kafka.MailToMentorProducer;
 import com.career.mentorship_matching_service.model.Mentee;
 import com.career.mentorship_matching_service.model.TimeSlot;
 import com.career.mentorship_matching_service.dto.UserCommandDTO;
 import com.career.mentorship_matching_service.model.User;
 import com.career.mentorship_matching_service.service.command.UserCommandService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.neo4j.driver.summary.ResultSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,7 +67,7 @@ public class UserCommandController {
         try {
             service.scheduleMeeting(meetingRequest,menteeId);
             return new ResponseEntity<>("Meeting Scheduled Successfully", HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | JsonProcessingException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

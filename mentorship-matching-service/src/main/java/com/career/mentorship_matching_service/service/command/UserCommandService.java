@@ -1,10 +1,13 @@
 package com.career.mentorship_matching_service.service.command;
 
+import com.career.mentorship_matching_service.dto.MailDTO;
 import com.career.mentorship_matching_service.dto.MeetingRequestDTO;
 import com.career.mentorship_matching_service.dto.RescheduleMeetingDTO;
 import com.career.mentorship_matching_service.dto.UserCommandDTO;
+import com.career.mentorship_matching_service.kafka.MailToMentorProducer;
 import com.career.mentorship_matching_service.model.*;
 import com.career.mentorship_matching_service.repo.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,9 @@ public class UserCommandService {
 
     @Autowired
     private MeetingQuery meetingQuery;
+
+    @Autowired
+    private MailToMentorProducer mailToMentorProducer;
 
     public void saveOrUpdateUser(User user) {
         String role = user.getRole();
@@ -99,7 +105,7 @@ public class UserCommandService {
         menteeRepo.save(mentee);
     }
 
-    public Meeting scheduleMeeting(MeetingRequestDTO meetingRequest, String menteeId) {
+    public Meeting scheduleMeeting(MeetingRequestDTO meetingRequest, String menteeId) throws JsonProcessingException {
         Mentor mentor = mentorRepo.findById(meetingRequest.getMentorId()).get();
         Mentee mentee = menteeRepo.findById(menteeId).get();
 
@@ -130,6 +136,20 @@ public class UserCommandService {
 
         mentee.getAvailableSlots().remove(matched.get());
         menteeRepo.save(mentee);
+
+        String mentorMail = mentor.getEmail();
+        String menteeMail = mentee.getEmail();
+
+        // Kafka producer to send email to mentor and mentee
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setMentorMail(mentorMail);
+        mailDTO.setMenteeMail(menteeMail);
+        mailDTO.setMentorName(mentor.getName());
+        mailDTO.setMenteeName(mentee.getName());
+        mailDTO.setMeetingDate(meetingRequest.getDate());
+        mailDTO.setMeetingStartTime(meetingRequest.getStartTime());
+        mailDTO.setMeetingEndTime(meetingRequest.getEndTime());
+        mailToMentorProducer.sendMailToMentor(mailDTO);
 
         return meeting;
     }
